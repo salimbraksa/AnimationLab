@@ -9,56 +9,45 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+   
+   // The testing orange view
    @IBOutlet weak var testView: UIView!
    
-   override func viewDidLoad() {
-      super.viewDidLoad()
-      
-      testView.layer.cornerRadius = 3
-
-      
-   }
+   @IBOutlet weak var a: UILabel!
+   @IBOutlet weak var c: UILabel!
    
-   override func animationDidStart(anim: CAAnimation) {
-      
-      let a = (anim as! CABasicAnimation).fromValue
-      let b = (anim as! CABasicAnimation).toValue
-      
-      print("Move from \(a) to \(b) starts at: \((testView.layer.presentationLayer() as! CALayer).position.x)")
-      
-   }
-
+   
    @IBAction func animate() {
       
-      // Declare Source / Destination Point
-      let a: CGFloat = CGFloat(random() % 300)
-      let b: CGFloat = CGFloat(random() % 300)
-      
-      // Describe animation
+      // Define animation
+      let a = self.a.center.x
+      let c = self.c.center.x
       let animation = CABasicAnimation(keyPath: "position.x")
-      animation.delegate = self
-      animation.fromValue = a
-      testView.layer.position.x = b       // Maybe I should disable implicit animations ?
-      animation.toValue = b
       animation.duration = 3
-//      animation.fillMode = kCAFillModeBackwards
-//      animation.removedOnCompletion = false
+      animation.fromValue = a
+      testView.layer.position.x = c
+      animation.toValue = c
       
-//      let pausedTime = testView.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
-      testView.layer.speed = 0
-//      print("Paused Time: \(pausedTime)")
-      
-      // Add
+      // Add it
       testView.layer.addAnimation(animation, forKey: "Animation")
       
-      testView.layer.timeOffset = 0 // pausedTime
-      
-   }
+      // Pause animation
+      testView.layer.speed = 0
 
-   @IBAction func slide(sender: UISlider) {
+   }
+   
+   @IBAction func resume() {
       
-    testView.layer.timeOffset = Double(sender.value) * 3
+      let layer = testView.layer
+   
+      let pausedTime = layer.timeOffset
+      layer.timeOffset = 1.5
+      layer.beginTime = 0
+      
+      let mediaTime = CACurrentMediaTime()
+      let timeSincePause = mediaTime - pausedTime
+      layer.beginTime = timeSincePause
+      layer.speed = 1
       
    }
    
