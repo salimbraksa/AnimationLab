@@ -16,7 +16,6 @@ class ViewController: UIViewController {
    @IBOutlet weak var a: UILabel!
    @IBOutlet weak var c: UILabel!
    
-   
    @IBAction func animate() {
       
       // Define animation
@@ -27,27 +26,9 @@ class ViewController: UIViewController {
       animation.fromValue = a
       testView.layer.position.x = c
       animation.toValue = c
+      animation.beginTime = CACurrentMediaTime() - 1.5
       
-      // Add it
       testView.layer.addAnimation(animation, forKey: "Animation")
-      
-      // Pause animation
-      testView.layer.speed = 0
-
-   }
-   
-   @IBAction func resume() {
-      
-      let layer = testView.layer
-   
-      let pausedTime = layer.timeOffset
-      layer.timeOffset = 1.5
-      layer.beginTime = 0
-      
-      let mediaTime = CACurrentMediaTime()
-      let timeSincePause = mediaTime - pausedTime
-      layer.beginTime = timeSincePause
-      layer.speed = 1
       
    }
    
